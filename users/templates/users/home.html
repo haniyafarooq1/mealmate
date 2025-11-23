@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="text-align:center; margin-top:50px;">
+    <h1>Welcome to MealMate!</h1>
+    <p>Can’t decide what to eat? Let’s help you choose!</p>
+
+    <div style="margin-top:30px;">
+        <a href="{% url 'cook' %}">
+            <button style="padding:15px 30px; margin:10px; font-size:16px; background-color:#4CAF50; color:white; border:none; border-radius:8px; cursor:pointer;">
+                🍳 Cook Something
+            </button>
+        </a>
+        <a href="{% url 'eat_out' %}">
+            <button style="padding:15px 30px; margin:10px; font-size:16px; background-color:#2196F3; color:white; border:none; border-radius:8px; cursor:pointer;">
+                🍽️ Eat Out
+            </button>
+        </a>
+        <a href="{% url 'surprise' %}">
+            <button style="padding:15px 30px; margin:10px; font-size:16px; background-color:#FF9800; color:white; border:none; border-radius:8px; cursor:pointer;">
+                🎲 Surprise Me
+            </button>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+

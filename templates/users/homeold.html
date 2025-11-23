@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div style="text-align:center; margin-top:50px;">
+    <h2>Welcome, {{ user.username }}!</h2>
+    <p>You are now logged in to MealMate 🎉</p>
+
+    <div style="margin-top:30px;">
+      <a href="{% url 'logout' %}" style="background:#c0392b;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">Logout</a>
+      <a href="/" style="background:#27ae60;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">Back to Main</a>
+    </div>
+  </div>
+{% endblock %}

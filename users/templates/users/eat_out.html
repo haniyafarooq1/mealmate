@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align:center; margin-top:40px;">
+    <h2>🍽️ Eat Out</h2>
+    <p>Looking to eat out? Find restaurants based on cuisine type!</p>
+
+    <form method="POST" style="margin-top:20px;">
+        {% csrf_token %}
+        <label><b>Enter cuisine type (e.g., Italian, Indian, Japanese):</b></label><br>
+        <input type="text" name="cuisine" value="{{ cuisine }}" placeholder="Type cuisine..." style="padding:8px; width:250px; margin-top:10px;">
+        <br>
+        <button type="submit" style="padding:10px 25px; margin-top:15px; background-color:#2196F3; color:white; border:none; border-radius:6px; cursor:pointer;">Find Restaurants</button>
+    </form>
+
+    {% if restaurants %}
+        <h3 style="margin-top:40px;">Available Restaurants:</h3>
+        <ul style="list-style-type:none; padding:0;">
+            {% for r in restaurants %}
+                <li style="margin:10px 0; padding:10px; border:1px solid #ccc; border-radius:6px;">
+                    <b>{{ r.name }}</b><br>
+                    Cuisine: {{ r.cuisine|title }} <br>
+                    Location: {{ r.location }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif cuisine %}
+        <p style="color:gray; margin-top:30px;">No restaurants found for this cuisine.</p>
+    {% endif %}
+</div>
+<div style="margin-top:30px; text-align:center;">
+    <a href="{% url 'home' %}">
+        <button style="padding:10px 20px; border:none; background-color:#555; color:white; border-radius:6px; cursor:pointer;">
+            ⬅️ Back to Home
+        </button>
+    </a>
+</div>
+
+{% endblock %}

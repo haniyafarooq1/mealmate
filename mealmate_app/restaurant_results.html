@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MealMate - Restaurant Results</title>
+</head>
+<body>
+    <h1>Restaurants for {{ cuisine }} cuisine:</h1>
+    
+    {% if restaurants %}
+        <ul>
+        {% for restaurant in restaurants %}
+            <li>
+                <strong>{{ restaurant.name }}</strong><br>
+                Location: {{ restaurant.location }}<br>
+                Average Price: ${{ restaurant.average_price }}<br>
+                {% if restaurant.discount %}
+                    Discount: {{ restaurant.discount }}% off<br>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No restaurants found for {{ cuisine }} cuisine.</p>
+        <p>Available cuisines in our database: 
+            {% with all_cuisines=Restaurant.objects.values_list|dictsort:"cuisine" %}
+                {{ all_cuisines|join:", " }}
+            {% endwith %}
+        </p>
+    {% endif %}
+    
+    <a href="{% url 'cuisine_selection' %}">← Choose another cuisine</a><br>
+    <a href="{% url 'decision_flow' %}">← Back to main menu</a>
+</body>
+</html>

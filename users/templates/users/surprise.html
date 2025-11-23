@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align:center; margin-top:50px;">
+    <h2>🎲 Surprise Me!</h2>
+    <p>Let MealMate decide for you!</p>
+
+    {% if suggestion %}
+        {% if suggestion_type == "dish" %}
+            <h3 style="color:#4CAF50;">You should cook: 🍳 {{ suggestion }}</h3>
+        {% else %}
+            <h3 style="color:#2196F3;">You should eat at: 🍽️ {{ suggestion }}</h3>
+        {% endif %}
+    {% else %}
+        <p style="margin-top:20px;">Click below to get a surprise suggestion!</p>
+    {% endif %}
+
+    <form method="GET" style="margin-top:30px;">
+        <button type="submit" style="padding:12px 25px; background-color:#FF9800; color:white; border:none; border-radius:8px; cursor:pointer;">
+            🎉 Surprise Me Again
+        </button>
+    </form>
+
+    <div style="margin-top:30px;">
+        <a href="{% url 'home' %}"><button style="padding:10px 20px; border:none; background-color:#555; color:white; border-radius:6px; cursor:pointer;">⬅️ Back to Home</button></a>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MealMate - Choose Cuisine</title>
+</head>
+<body>
+    <h1>What type of cuisine are you in the mood for?</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="cuisine-select">Choose a cuisine:</label>
+        <select name="cuisine" id="cuisine-select" required>
+            <option value="">-- Please choose a cuisine --</option>
+            {% for cuisine in unique_cuisines %}
+                <option value="{{ cuisine }}">{{ cuisine }}</option>
+            {% endfor %}
+        </select>
+        
+        <button type="submit">Find Restaurants</button>
+    </form>
+    
+    <a href="{% url 'decision_flow' %}">← Back to main menu</a>
+</body>
+</html>

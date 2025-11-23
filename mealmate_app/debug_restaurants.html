@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug - All Restaurants</title>
+</head>
+<body>
+    <h1>All Restaurants in Database:</h1>
+    <ul>
+    {% for restaurant in restaurants %}
+        <li>
+            <strong>{{ restaurant.name }}</strong> - 
+            Cuisine: "{{ restaurant.cuisine }}" - 
+            Location: {{ restaurant.location }}
+        </li>
+    {% empty %}
+        <li>No restaurants in database</li>
+    {% endfor %}
+    </ul>
+    <a href="{% url 'cuisine_selection' %}">← Back to cuisine selection</a>
+</body>
+</html>

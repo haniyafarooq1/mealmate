@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div style="text-align:center; margin-top:50px;">
+    <h2>Are you a User or an Admin?</h2>
+
+    <div style="margin-top:30px;">
+      <!-- User Section -->
+      <div style="display:inline-block; margin:10px; padding:20px; border:1px solid #ccc; border-radius:8px;">
+        <h3>User</h3>
+        <p>Access recipes and restaurants.</p>
+        <a href="{% url 'signup' %}" style="background:#27ae60;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">Sign Up</a>
+        <a href="{% url 'login' %}" style="background:#2980b9;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">Login</a>
+      </div>
+
+      <!-- Admin Section -->
+      <div style="display:inline-block; margin:10px; padding:20px; border:1px solid #ccc; border-radius:8px;">
+        <h3>Admin</h3>
+        <p>Manage site content.</p>
+        <a href="/admin/" style="background:#e67e22;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">Go to Admin Login</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

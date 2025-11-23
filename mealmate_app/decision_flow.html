@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MealMate - Decision Flow</title>
+</head>
+<body>
+    <h1>What would you like to do?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" name="choice" value="eat_out">🍽️ Eat Out</button>
+        <button type="submit" name="choice" value="cook_home">👨‍🍳 Cook at Home</button>
+        <button type="submit" name="choice" value="surprise_me">🎉 Surprise Me!</button>
+    </form>
+</body>
+</html>
