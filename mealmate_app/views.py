@@ -21,22 +21,27 @@ def decision_flow(request):
     return render(request, 'mealmate_app/decision_flow.html')
 
 def cuisine_selection(request):
-    """Handle cuisine selection for restaurants"""
-    # Get all unique cuisines from the database
     unique_cuisines = Restaurant.objects.values_list('cuisine', flat=True).distinct()
-    
+
+    print("DEBUG — cuisines in DB:", list(unique_cuisines))
+
     if request.method == 'POST':
         cuisine = request.POST.get('cuisine')
-        # Use case-insensitive filtering
+        print("DEBUG — user selected:", cuisine)
+
         restaurants = Restaurant.objects.filter(cuisine__iexact=cuisine)
+        print("DEBUG — restaurants found:", restaurants.count())
+
         return render(request, 'mealmate_app/restaurant_results.html', {
             'restaurants': restaurants,
             'cuisine': cuisine
         })
-    
+
+    # ✅ THIS WAS MISSING!!!
     return render(request, 'mealmate_app/cuisine_selection.html', {
-        'unique_cuisines': unique_cuisines
+        "unique_cuisines": unique_cuisines
     })
+
 
 def meal_type_selection(request):
     """Handle meal type selection for recipes"""

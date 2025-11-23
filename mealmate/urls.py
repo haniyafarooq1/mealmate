@@ -24,5 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),   # user signup/login pages
     path('', include('home.urls')),          # landing page at root "/"
-    # REMOVE this line: path('', include('mealmate_app.urls')),
+    path('', include('mealmate_app.urls')),
 ]
