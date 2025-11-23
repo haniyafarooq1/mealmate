@@ -47,10 +47,24 @@ def meal_type_selection(request):
     """Handle meal type selection for recipes"""
     if request.method == 'POST':
         meal_type = request.POST.get('meal_type')
-        recipes = Recipe.objects.filter(meal_type__iexact=meal_type)
+        ingredients = request.POST.get('ingredients', '').strip()
+        
+        # Start with meal type filter
+        recipes = Recipe.objects.filter(meal_type__icontains=meal_type)
+        
+        # If ingredients are provided, filter further
+        if ingredients:
+            # Split ingredients by commas and remove extra spaces
+            ingredient_list = [ingredient.strip().lower() for ingredient in ingredients.split(',')]
+            
+            # Filter recipes that contain ANY of the ingredients
+            for ingredient in ingredient_list:
+                recipes = recipes.filter(ingredients__icontains=ingredient)
+        
         return render(request, 'mealmate_app/recipe_results.html', {
             'recipes': recipes,
-            'meal_type': meal_type
+            'meal_type': meal_type,
+            'ingredients': ingredients
         })
     
     return render(request, 'mealmate_app/meal_type_selection.html')

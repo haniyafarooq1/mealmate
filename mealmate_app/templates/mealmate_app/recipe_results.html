@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MealMate - Recipe Results</title>
+</head>
+<body>
+    <h1>Recipes for {{ meal_type }}</h1>
+    {% if ingredients %}
+        <h3>Using ingredients: {{ ingredients }}</h3>
+    {% endif %}
+    
+    {% if recipes %}
+        <p>Found {{ recipes|length }} recipe(s):</p>
+        <ul>
+        {% for recipe in recipes %}
+            <li>
+                <strong>{{ recipe.title }}</strong><br>
+                Meal Type: {{ recipe.meal_type }}<br>
+                Time: {{ recipe.estimated_time }} minutes<br>
+                Ingredients: {{ recipe.ingredients }}<br>
+                Steps: {{ recipe.steps }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recipes found for your criteria.</p>
+    {% endif %}
+    
+    <a href="{% url 'meal_type_selection' %}">← Choose another meal type</a><br>
+    <a href="/users/home/">← Back to main menu</a>
+</body>
+</html>
+    
+ 

@@ -1,48 +1,29 @@
-{% extends "base.html" %}
-{% block content %}
-<div style="text-align:center; margin-top:40px;">
-    <h2>🍳 Cook Something</h2>
-    <p>Pick a meal type or list ingredients you have, and we’ll find matching recipes!</p>
+<h2>Cook at Home</h2>
 
-    <form method="POST" style="margin-top:20px;">
-        {% csrf_token %}
-        <label><b>Meal Type:</b></label><br>
-        <select name="meal_type" style="padding:8px; margin:10px;">
-            <option value="">-- Select --</option>
-            <option value="Quick" {% if meal_type == "Quick" %}selected{% endif %}>Quick</option>
-            <option value="Fancy" {% if meal_type == "Fancy" %}selected{% endif %}>Fancy</option>
-        </select><br>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="meal_type" placeholder="Enter meal type (e.g., breakfast, dessert)" value="{{ meal_type }}">
+    <button type="submit">Search by Meal Type</button>
+</form>
 
-        <p><b>OR</b></p>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="ingredients" placeholder="Enter ingredients (e.g., eggs, flour)" value="{{ ingredients }}">
+    <button type="submit">Search by Ingredients</button>
+</form>
 
-        <label><b>Ingredients you have (comma separated):</b></label><br>
-        <textarea name="ingredients" rows="3" cols="40">{{ ingredients }}</textarea><br>
-
-        <button type="submit" style="padding:10px 25px; margin-top:15px; background-color:#4CAF50; color:white; border:none; border-radius:6px; cursor:pointer;">Find Recipes</button>
-    </form>
-
-    {% if recipes %}
-        <h3 style="margin-top:40px;">Matching Recipes:</h3>
-        <ul style="list-style-type:none; padding:0;">
-            {% for r in recipes %}
-                <li style="margin:10px 0; padding:10px; border:1px solid #ccc; border-radius:6px;">
-                    <b>{{ r.name }}</b><br>
-                    Ingredients: {{ r.ingredients }}<br>
-                    Type: {{ r.meal_type }}
-                </li>
-            {% endfor %}
-        </ul>
-    {% elif meal_type or ingredients %}
-        <p style="color:gray; margin-top:30px;">No recipes found.</p>
-    {% endif %}
-</div>
-<div style="margin-top:30px; text-align:center;">
-    <a href="{% url 'home' %}">
-        <button style="padding:10px 20px; border:none; background-color:#555; color:white; border-radius:6px; cursor:pointer;">
-            ⬅️ Back to Home
-        </button>
-    </a>
-</div>
-
-{% endblock %}
-
+{% if recipes %}
+    <h3>Found {{ recipes|length }} recipe(s):</h3>
+    <ul>
+    {% for recipe in recipes %}
+        <li>
+            <strong>{{ recipe.title }}</strong><br>
+            Meal Type: {{ recipe.meal_type }}<br>
+            Time: {{ recipe.estimated_time }} minutes<br>
+            Ingredients: {{ recipe.ingredients }}
+        </li>
+    {% endfor %}
+    </ul>
+{% elif meal_type or ingredients %}
+    <p>No recipes found for your search.</p>
+{% endif %}

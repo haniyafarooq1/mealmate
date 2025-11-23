@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MealMate - Choose Meal Type</title>
+</head>
+<body>
+    <h1>What type of meal would you like to cook?</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="meal-type-select"><strong>Choose a meal type:</strong></label><br>
+        <select name="meal_type" id="meal-type-select" required style="padding: 8px; width: 200px;">
+            <option value="">-- Please choose a meal type --</option>
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch">Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="dessert">Dessert</option>
+            <option value="snack">Snack</option>
+        </select>
+        
+        <br><br>
+        
+        <label for="ingredients"><strong>Optional: Enter ingredients you have</strong></label><br>
+        <small>(Separate by commas, e.g., eggs, flour, milk)</small><br>
+        <input type="text" name="ingredients" id="ingredients" placeholder="eggs, flour, milk" style="padding: 8px; width: 300px;">
+        
+        <br><br>
+        
+        <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 4px;">
+            Find Recipes
+        </button>
+    </form>
+
+    <br>
+    <a href="{% url 'home' %}">← Back to main menu</a>
+</body>
+</html>

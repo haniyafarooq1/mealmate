@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MealMate - Surprise!</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 40px; 
+            text-align: center; 
+            background-color: #f5f5f5;
+        }
+        .surprise-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .surprise-box { 
+            border: 3px dashed #4CAF50; 
+            padding: 30px; 
+            margin: 20px 0; 
+            border-radius: 10px; 
+        }
+        .restaurant { 
+            background-color: #e8f5e8; 
+            border-color: #4CAF50;
+        }
+        .recipe { 
+            background-color: #fff3e0; 
+            border-color: #FF9800;
+        }
+        h1 { color: #333; }
+        h2 { color: #555; }
+        h3 { color: #4CAF50; font-size: 24px; }
+        .try-again { 
+            margin-top: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="surprise-container">
+        <h1>🎉 Surprise Me! 🎉</h1>
+        
+        <div class="surprise-box {% if choice_type == 'restaurant' %}restaurant{% else %}recipe{% endif %}">
+            {% if choice %}
+                {% if choice_type == 'restaurant' %}
+                    <h2>🍽️ You should eat at:</h2>
+                    <h3>{{ choice.name }}</h3>
+                    <p><strong>Cuisine:</strong> {{ choice.cuisine }}</p>
+                    <p><strong>Location:</strong> {{ choice.location }}</p>
+                    <p><strong>Average Price:</strong> ${{ choice.average_price }}</p>
+                    {% if choice.discount %}
+                        <p><strong>Special Offer:</strong> {{ choice.discount }}% off! 🎁</p>
+                    {% endif %}
+                {% else %}
+                    <h2>👨‍🍳 You should cook:</h2>
+                    <h3>{{ choice.title }}</h3>
+                    <p><strong>Meal Type:</strong> {{ choice.meal_type }}</p>
+                    <p><strong>Time Required:</strong> {{ choice.estimated_time }} minutes</p>
+                    <p><strong>Ingredients:</strong> {{ choice.ingredients }}</p>
+                    <p><strong>Instructions:</strong> {{ choice.steps }}</p>
+                {% endif %}
+            {% else %}
+                <h2>Oops! 😔</h2>
+                <p>No restaurants or recipes available for surprise selection.</p>
+                <p>Please add some options in the admin panel.</p>
+            {% endif %}
+        </div>
+
+        <div class="try-again">
+            <p>Not happy with this suggestion?</p>
+            <a href="{% url 'surprise_me' %}" class="btn">🎲 Try Another Surprise!</a>
+        </div>
+
+        <br>
+        <a href="{% url 'home' %}" class="btn" style="background: #6c757d;">← Back to Main Menu</a>
+    </div>
+</body>
+</html>

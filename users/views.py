@@ -58,10 +58,13 @@ def home_view(request):
 
 
 @login_required
+@login_required
 def cook_view(request):
     """
     Suggest recipes based on meal type or ingredients entered by user.
     """
+    from mealmate_app.models import Recipe  # ADD THIS IMPORT
+    
     recipes = []
     meal_type = ''
     ingredients = ''
@@ -71,9 +74,14 @@ def cook_view(request):
         ingredients = request.POST.get('ingredients', '').strip()
 
         if meal_type:
-            recipes = recipes_by_meal_type(meal_type)
+            # Filter recipes from database by meal_type
+            recipes = Recipe.objects.filter(meal_type__icontains=meal_type)
         elif ingredients:
-            recipes = recipes_by_ingredients(ingredients)
+            # Filter recipes that contain the ingredients
+            recipes = Recipe.objects.filter(ingredients__icontains=ingredients)
+        else:
+            # Show all recipes if no filter
+            recipes = Recipe.objects.all()
 
     context = {
         'recipes': recipes,
