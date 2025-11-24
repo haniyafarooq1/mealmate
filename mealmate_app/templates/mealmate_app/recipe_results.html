@@ -18,7 +18,16 @@
                 Meal Type: {{ recipe.meal_type }}<br>
                 Time: {{ recipe.estimated_time }} minutes<br>
                 Ingredients: {{ recipe.ingredients }}<br>
-                Steps: {{ recipe.steps }}
+                Steps: {{ recipe.steps }}<br>
+                
+                <!-- MOVE THE FAVORITES FORM INSIDE THE LOOP -->
+                <form action="{% url 'add_favorite_recipe' %}" method="post" style="display: inline; margin-top: 10px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+                    <button type="submit" style="background: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer;">
+                        ❤️ Add to Favorites
+                    </button>
+                </form>
             </li>
         {% endfor %}
         </ul>
@@ -30,5 +39,3 @@
     <a href="/users/home/">← Back to main menu</a>
 </body>
 </html>
-    
- 

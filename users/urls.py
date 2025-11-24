@@ -9,6 +9,9 @@ urlpatterns = [
     path('cook/', views.cook_view, name='cook'),
     path('eat-out/', views.eat_out_view, name='eat_out'),
     path('surprise/', views.surprise_view, name='surprise'),
+    path('favorites/', views.favorites_view, name='favorites'),
+    path('favorites/add-restaurant/', views.add_favorite_restaurant, name='add_favorite_restaurant'),
+    path('favorites/add-recipe/', views.add_favorite_recipe, name='add_favorite_recipe'),
 ]
 
 

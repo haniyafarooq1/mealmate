@@ -16,6 +16,15 @@
                 {% if restaurant.discount %}
                     Discount: {{ restaurant.discount }}% off<br>
                 {% endif %}
+                
+                <!-- MOVE THE FAVORITES FORM INSIDE THE LOOP -->
+                <form action="{% url 'add_favorite_restaurant' %}" method="post" style="display: inline; margin-top: 10px;">
+                    {% csrf_token %}
+                    <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
+                    <button type="submit" style="background: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer;">
+                        ❤️ Add to Favorites
+                    </button>
+                </form>
             </li>
         {% endfor %}
         </ul>
@@ -29,6 +38,6 @@
     {% endif %}
     
     <a href="{% url 'cuisine_selection' %}">← Choose another cuisine</a><br>
-    <a href="{% url 'home' %}">← Back to main menu</a>
+    <a href="/users/home/">← Back to main menu</a>
 </body>
 </html>

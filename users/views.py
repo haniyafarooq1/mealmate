@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from .services.suggestion import recipes_by_meal_type, recipes_by_ingredients
 import random
+from mealmate_app.models import FavoriteRestaurant, FavoriteRecipe, Restaurant, Recipe
 
 
 # SIGNUP - using the form with email and password confirmation
@@ -57,7 +58,6 @@ def home_view(request):
     return render(request, 'users/home.html')
 
 
-@login_required
 @login_required
 def cook_view(request):
     """
@@ -148,6 +148,64 @@ def surprise_view(request):
     return render(request, 'users/surprise.html', context)
 
 
+@login_required
+def favorites_view(request):
+    """Show user's favorite restaurants and recipes"""
+    favorite_restaurants = FavoriteRestaurant.objects.filter(user=request.user)
+    favorite_recipes = FavoriteRecipe.objects.filter(user=request.user)
+    
+    context = {
+        'favorite_restaurants': favorite_restaurants,
+        'favorite_recipes': favorite_recipes,
+    }
+    return render(request, 'users/favorites.html', context)
 
+@login_required
+def add_favorite_recipe(request):
+    """Add a recipe to user's favorites"""
+    if request.method == 'POST':
+        recipe_id = request.POST.get('recipe_id')
+        
+        # Check if recipe_id is provided and is a valid number
+        if not recipe_id or not recipe_id.isdigit():
+            messages.error(request, "Invalid recipe selection!")
+            return redirect(request.META.get('HTTP_REFERER', '/users/home/'))
+        
+        try:
+            recipe = Recipe.objects.get(id=int(recipe_id))
+            # Check if already favorited
+            if not FavoriteRecipe.objects.filter(user=request.user, recipe=recipe).exists():
+                FavoriteRecipe.objects.create(user=request.user, recipe=recipe)
+                messages.success(request, f"Added {recipe.title} to favorites!")
+            else:
+                messages.info(request, f"{recipe.title} is already in your favorites!")
+        except Recipe.DoesNotExist:
+            messages.error(request, "Recipe not found!")
+    
+    # Go back to the previous page
+    return redirect(request.META.get('HTTP_REFERER', '/users/home/'))
 
-
+@login_required
+def add_favorite_restaurant(request):
+    """Add a restaurant to user's favorites"""
+    if request.method == 'POST':
+        restaurant_id = request.POST.get('restaurant_id')
+        
+        # Check if restaurant_id is provided and is a valid number
+        if not restaurant_id or not restaurant_id.isdigit():
+            messages.error(request, "Invalid restaurant selection!")
+            return redirect(request.META.get('HTTP_REFERER', '/users/home/'))
+        
+        try:
+            restaurant = Restaurant.objects.get(id=int(restaurant_id))
+            # Check if already favorited
+            if not FavoriteRestaurant.objects.filter(user=request.user, restaurant=restaurant).exists():
+                FavoriteRestaurant.objects.create(user=request.user, restaurant=restaurant)
+                messages.success(request, f"Added {restaurant.name} to favorites!")
+            else:
+                messages.info(request, f"{restaurant.name} is already in your favorites!")
+        except Restaurant.DoesNotExist:
+            messages.error(request, "Restaurant not found!")
+    
+    # Go back to the previous page
+    return redirect(request.META.get('HTTP_REFERER', '/users/home/'))

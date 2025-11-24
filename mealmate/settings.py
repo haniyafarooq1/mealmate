@@ -129,4 +129,3 @@ LOGOUT_REDIRECT_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/users/home/'
 LOGIN_URL = '/users/login/'
 
-LOGIN_REDIRECT_URL = 'users:home'  # Redirect to users home after login

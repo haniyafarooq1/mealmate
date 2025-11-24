@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Favorites</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .favorites-section { margin: 30px 0; }
+        .favorite-item { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+        }
+        .restaurant { background-color: #e8f5e8; }
+        .recipe { background-color: #fff3e0; }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>❤️ My Favorites</h1>
+
+    <div class="favorites-section">
+        <h2>Favorite Restaurants</h2>
+        {% if favorite_restaurants %}
+            {% for fav in favorite_restaurants %}
+                <div class="favorite-item restaurant">
+                    <h3>{{ fav.restaurant.name }}</h3>
+                    <p><strong>Cuisine:</strong> {{ fav.restaurant.cuisine }}</p>
+                    <p><strong>Location:</strong> {{ fav.restaurant.location }}</p>
+                    <p><strong>Price:</strong> ${{ fav.restaurant.average_price }}</p>
+                    <a href="#" class="btn">Remove from Favorites</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No favorite restaurants yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="favorites-section">
+        <h2>Favorite Recipes</h2>
+        {% if favorite_recipes %}
+            {% for fav in favorite_recipes %}
+                <div class="favorite-item recipe">
+                    <h3>{{ fav.recipe.title }}</h3>
+                    <p><strong>Meal Type:</strong> {{ fav.recipe.meal_type }}</p>
+                    <p><strong>Time:</strong> {{ fav.recipe.estimated_time }} minutes</p>
+                    <p><strong>Ingredients:</strong> {{ fav.recipe.ingredients }}</p>
+                    <a href="#" class="btn">Remove from Favorites</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No favorite recipes yet.</p>
+        {% endif %}
+    </div>
+
+    <br>
+    <a href="/users/home/">← Back to Home</a>
+</body>
+</html>

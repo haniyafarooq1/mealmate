@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .recipe_models import Recipe
+
 
 # ✅ Restaurant model
 class Restaurant(models.Model):

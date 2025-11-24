@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Favorites</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .favorites-section { margin: 30px 0; }
+        .favorite-item { 
+            border: 1px solid #ddd; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px;
+        }
+        .restaurant { background-color: #e8f5e8; }
+        .recipe { background-color: #fff3e0; }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        .empty-state {
+            text-align: center;
+            color: #666;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>❤️ My Favorites</h1>
+
+    <div class="favorites-section">
+        <h2>Favorite Restaurants</h2>
+        {% if favorite_restaurants %}
+            {% for fav in favorite_restaurants %}
+                <div class="favorite-item restaurant">
+                    <h3>{{ fav.restaurant.name }}</h3>
+                    <p><strong>Cuisine:</strong> {{ fav.restaurant.cuisine }}</p>
+                    <p><strong>Location:</strong> {{ fav.restaurant.location }}</p>
+                    <p><strong>Price:</strong> ${{ fav.restaurant.average_price }}</p>
+                    {% if fav.restaurant.discount %}
+                        <p><strong>Discount:</strong> {{ fav.restaurant.discount }}% off</p>
+                    {% endif %}
+                    <!-- We'll add remove functionality later -->
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <p>No favorite restaurants yet.</p>
+                <p>Browse restaurants and click "❤️ Add to Favorites" to add some!</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="favorites-section">
+        <h2>Favorite Recipes</h2>
+        {% if favorite_recipes %}
+            {% for fav in favorite_recipes %}
+                <div class="favorite-item recipe">
+                    <h3>{{ fav.recipe.title }}</h3>
+                    <p><strong>Meal Type:</strong> {{ fav.recipe.meal_type }}</p>
+                    <p><strong>Time:</strong> {{ fav.recipe.estimated_time }} minutes</p>
+                    <p><strong>Ingredients:</strong> {{ fav.recipe.ingredients }}</p>
+                    <p><strong>Steps:</strong> {{ fav.recipe.steps }}</p>
+                    <!-- We'll add remove functionality later -->
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <p>No favorite recipes yet.</p>
+                <p>Browse recipes and click "❤️ Add to Favorites" to add some!</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <br>
+    <a href="/users/home/">← Back to Home</a>
+
+    {% if messages %}
+    <div style="margin-top: 20px;">
+        {% for message in messages %}
+            <div style="padding: 10px; background: #d4edda; color: #155724; border-radius: 4px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</body>
+</html>
