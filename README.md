@@ -274,6 +274,6 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 **Haniya Farooq** -  haniya.farooq1290@gmail.com
 
-**Project Link:** [https://github.com/yourusername/mealmate](https://github.com/yourusername/mealmate)
+**Project Link:** [https://github.com/haniyafarooq1/mealmate](https://github.com/haniyafarooq1/mealmate)
 
 ---
