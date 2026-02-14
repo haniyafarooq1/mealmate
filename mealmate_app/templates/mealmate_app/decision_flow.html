@@ -1,15 +1,208 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MealMate - Decision Flow</title>
-</head>
-<body>
-    <h1>What would you like to do?</h1>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit" name="choice" value="eat_out">🍽️ Eat Out</button>
-        <button type="submit" name="choice" value="cook_home">👨‍🍳 Cook at Home</button>
-        <button type="submit" name="choice" value="surprise_me">🎉 Surprise Me!</button>
-    </form>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Decision Hero Section -->
+<section class="hero-section decision-hero">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <h1 class="display-4 fw-bold text-white mb-4 animate-fade-in">
+                    What's Your Food Adventure? 🗺️
+                </h1>
+                <p class="lead text-white mb-5 animate-fade-in-delay">
+                    Choose your path and let MealMate guide you to your perfect meal experience
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Animated background elements -->
+    <div class="floating-elements">
+        <div class="floating-element element-1">🍕</div>
+        <div class="floating-element element-2">🍣</div>
+        <div class="floating-element element-3">🍔</div>
+        <div class="floating-element element-4">🥗</div>
+    </div>
+</section>
+
+<!-- Decision Cards Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center g-4">
+            <!-- Eat Out Card -->
+            <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                <form method="post" class="h-100">
+                    {% csrf_token %}
+                    <input type="hidden" name="choice" value="eat_out">
+                    <button type="submit" class="card decision-card h-100 border-0 shadow-hover w-100 text-start">
+                        <div class="card-body text-center p-5">
+                            <div class="decision-icon mb-4 eat-out">
+                                <i class="fas fa-store fa-3x text-white"></i>
+                            </div>
+                            <h3 class="fw-bold mb-3">🍽️ Eat Out</h3>
+                            <p class="text-muted mb-4">
+                                Discover amazing restaurants, explore different cuisines, and enjoy a night out without the decision stress.
+                            </p>
+                            <div class="decision-features">
+                                <span class="badge bg-primary me-2">Restaurants</span>
+                                <span class="badge bg-primary me-2">Cuisines</span>
+                                <span class="badge bg-primary">Reviews</span>
+                            </div>
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Cook at Home Card -->
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <form method="post" class="h-100">
+                    {% csrf_token %}
+                    <input type="hidden" name="choice" value="cook_home">
+                    <button type="submit" class="card decision-card h-100 border-0 shadow-hover w-100 text-start">
+                        <div class="card-body text-center p-5">
+                            <div class="decision-icon mb-4 cook-home">
+                                <i class="fas fa-home fa-3x text-white"></i>
+                            </div>
+                            <h3 class="fw-bold mb-3">👨‍🍳 Cook at Home</h3>
+                            <p class="text-muted mb-4">
+                                Find perfect recipes based on your ingredients, meal preferences, and cooking time. Home cooking made easy!
+                            </p>
+                            <div class="decision-features">
+                                <span class="badge bg-success me-2">Recipes</span>
+                                <span class="badge bg-success me-2">Ingredients</span>
+                                <span class="badge bg-success">Quick Meals</span>
+                            </div>
+                        </div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Surprise Me Card -->
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <form method="post" class="h-100">
+                    {% csrf_token %}
+                    <input type="hidden" name="choice" value="surprise_me">
+                    <button type="submit" class="card decision-card h-100 border-0 shadow-hover w-100 text-start">
+                        <div class="card-body text-center p-5">
+                            <div class="decision-icon mb-4 surprise-me">
+                                <i class="fas fa-gift fa-3x text-white"></i>
+                            </div>
+                            <h3 class="fw-bold mb-3">🎉 Surprise Me!</h3>
+                            <p class="text-muted mb-4">
+                                Feeling adventurous? Let fate decide! Get random restaurant or recipe suggestions for a culinary surprise.
+                            </p>
+                            <div class="decision-features">
+                                <span class="badge bg-warning me-2">Random</span>
+                                <span class="badge bg-warning me-2">Fun</span>
+                                <span class="badge bg-warning">Adventure</span>
+                            </div>
+                        </div>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="300">
+            <a href="/users/home/" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-arrow-left me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .decision-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .decision-card {
+        transition: all 0.3s ease;
+        border-radius: 20px;
+        cursor: pointer;
+        background: white;
+    }
+    
+    .decision-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+    }
+    
+    .decision-icon {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        transition: transform 0.3s ease;
+    }
+    
+    .decision-card:hover .decision-icon {
+        transform: scale(1.1);
+    }
+    
+    .eat-out {
+        background: linear-gradient(135deg, #2196F3 0%, #21CBF3 100%);
+    }
+    
+    .cook-home {
+        background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+    }
+    
+    .surprise-me {
+        background: linear-gradient(135deg, #FF9800 0%, #FFC107 100%);
+    }
+    
+    .decision-features {
+        margin-top: 20px;
+    }
+    
+    .badge {
+        font-size: 0.7rem;
+        padding: 6px 12px;
+        border-radius: 15px;
+    }
+    
+    .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+    
+    .floating-element {
+        position: absolute;
+        font-size: 2rem;
+        animation: floatRandom 10s ease-in-out infinite;
+    }
+    
+    .element-1 { top: 20%; left: 10%; animation-delay: 0s; }
+    .element-2 { top: 60%; right: 15%; animation-delay: 2s; }
+    .element-3 { bottom: 20%; left: 20%; animation-delay: 4s; }
+    .element-4 { top: 40%; right: 5%; animation-delay: 6s; }
+    
+    @keyframes floatRandom {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(10px, -15px) rotate(5deg); }
+        50% { transform: translate(-5px, -25px) rotate(-5deg); }
+        75% { transform: translate(15px, -10px) rotate(3deg); }
+    }
+</style>
+
+<!-- AOS Animation -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true
+    });
+</script>
+{% endblock %}

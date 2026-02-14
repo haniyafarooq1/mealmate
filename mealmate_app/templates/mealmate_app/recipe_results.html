@@ -1,41 +1,323 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MealMate - Recipe Results</title>
-</head>
-<body>
-    <h1>Recipes for {{ meal_type }}</h1>
-    {% if ingredients %}
-        <h3>Using ingredients: {{ ingredients }}</h3>
-    {% endif %}
-    
-    {% if recipes %}
-        <p>Found {{ recipes|length }} recipe(s):</p>
-        <ul>
-        {% for recipe in recipes %}
-            <li>
-                <strong>{{ recipe.title }}</strong><br>
-                Meal Type: {{ recipe.meal_type }}<br>
-                Time: {{ recipe.estimated_time }} minutes<br>
-                Ingredients: {{ recipe.ingredients }}<br>
-                Steps: {{ recipe.steps }}<br>
-                
-                <!-- MOVE THE FAVORITES FORM INSIDE THE LOOP -->
-                <form action="{% url 'add_favorite_recipe' %}" method="post" style="display: inline; margin-top: 10px;">
-                    {% csrf_token %}
-                    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
-                    <button type="submit" style="background: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer;">
-                        ❤️ Add to Favorites
-                    </button>
-                </form>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No recipes found for your criteria.</p>
-    {% endif %}
-    
-    <a href="{% url 'meal_type_selection' %}">← Choose another meal type</a><br>
-    <a href="/users/home/">← Back to main menu</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Main Content -->
+<section class="recipe-results-section" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 50%, #6c5ce7 100%); min-height: 100vh; padding: 80px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Results Header -->
+                <div class="results-header text-center mb-5" data-aos="fade-down">
+                    <h1 class="display-5 fw-bold text-white mb-3">👨‍🍳 {{ meal_type|title }} Recipes</h1>
+                    {% if ingredients %}
+                    <p class="lead text-white mb-3">Using ingredients: <span class="ingredients-highlight">{{ ingredients }}</span></p>
+                    {% endif %}
+                    <div class="results-stats">
+                        <span class="badge bg-white text-primary px-3 py-2 rounded-pill">
+                            <i class="fas fa-utensils me-1"></i>{{ recipes|length }} recipes found
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Recipe Cards -->
+                {% if recipes %}
+                <div class="recipe-cards" data-aos="fade-up">
+                    {% for recipe in recipes %}
+                    <div class="recipe-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                        <div class="card-body">
+                            <!-- Recipe Header -->
+                            <div class="recipe-header">
+                                <h3 class="recipe-title">{{ recipe.title }}</h3>
+                                <div class="recipe-badges">
+                                    <span class="meal-type-badge">{{ recipe.meal_type }}</span>
+                                    <span class="time-badge">{{ recipe.estimated_time }} min</span>
+                                </div>
+                            </div>
+
+                            <!-- Recipe Details -->
+                            <div class="recipe-details">
+                                <div class="detail-section">
+                                    <div class="detail-label">
+                                        <i class="fas fa-carrot text-primary me-2"></i>
+                                        Ingredients
+                                    </div>
+                                    <div class="detail-content ingredients-list">
+                                        {{ recipe.ingredients }}
+                                    </div>
+                                </div>
+                                
+                                <div class="detail-section">
+                                    <div class="detail-label">
+                                        <i class="fas fa-list-ol text-success me-2"></i>
+                                        Instructions
+                                    </div>
+                                    <div class="detail-content steps-list">
+                                        {{ recipe.steps }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <!-- EXACT SAME FAVORITES LOGIC -->
+                                <form action="{% url 'add_favorite_recipe' %}" method="post" class="favorite-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+                                    <button type="submit" class="favorite-btn">
+                                        <i class="fas fa-heart me-2"></i>
+                                        Save to Favorites
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <!-- No Results State -->
+                <div class="no-results text-center" data-aos="fade-up">
+                    <div class="no-results-icon mb-4">
+                        <i class="fas fa-search fa-3x text-white"></i>
+                    </div>
+                    <h3 class="text-white mb-3">No Recipes Found</h3>
+                    <p class="text-white mb-4">We couldn't find any recipes matching your criteria.</p>
+                    {% if ingredients %}
+                    <p class="text-white-50 small">Try different ingredients or browse all {{ meal_type }} recipes</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Navigation -->
+                <div class="navigation-results text-center mt-5" data-aos="fade-up">
+                    <div class="btn-group-custom">
+                        <a href="{% url 'meal_type_selection' %}" class="btn btn-outline-light">
+                            <i class="fas fa-arrow-left me-2"></i>Choose Another Meal Type
+                        </a>
+                        <a href="/users/home/" class="btn btn-light text-primary">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .results-header {
+        padding: 0 20px;
+    }
+
+    .ingredients-highlight {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+
+    .recipe-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .recipe-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .recipe-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .recipe-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .recipe-title {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0;
+        flex: 1;
+    }
+
+    .recipe-badges {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .meal-type-badge {
+        background: linear-gradient(135deg, #74b9ff, #0984e3);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .time-badge {
+        background: linear-gradient(135deg, #00b894, #00cec9);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .recipe-details {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 25px;
+    }
+
+    .detail-section {
+        background: rgba(116, 185, 255, 0.05);
+        border-radius: 12px;
+        padding: 20px;
+        border-left: 4px solid #74b9ff;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .detail-content {
+        color: #4a5568;
+        line-height: 1.6;
+    }
+
+    .ingredients-list, .steps-list {
+        white-space: pre-line;
+        font-size: 0.95rem;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .favorite-form {
+        margin: 0;
+    }
+
+    .favorite-btn {
+        background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        display: flex;
+        align-items: center;
+    }
+
+    .favorite-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        background: linear-gradient(135deg, #ff5252, #ff6b6b);
+    }
+
+    .no-results {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 60px 40px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .no-results-icon {
+        opacity: 0.8;
+    }
+
+    .navigation-results {
+        padding: 20px 0;
+    }
+
+    .btn-group-custom {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid;
+    }
+
+    .btn-outline-light {
+        color: white;
+        border-color: white;
+        background: transparent;
+    }
+
+    .btn-outline-light:hover {
+        background: white;
+        color: #0984e3;
+        transform: translateY(-2px);
+    }
+
+    .btn-light {
+        background: white;
+        color: #0984e3;
+        border: none;
+    }
+
+    .btn-light:hover {
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+        color: #0984e3;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+    }
+
+    .text-primary {
+        color: #0984e3 !important;
+    }
+</style>
+
+<!-- AOS Animation -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+</script>
+{% endblock %}

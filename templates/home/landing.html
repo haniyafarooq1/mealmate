@@ -1,23 +1,360 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  <div style="text-align:center; margin-top:50px;">
-    <h2>Are you a User or an Admin?</h2>
-
-    <div style="margin-top:30px;">
-      <!-- User Section -->
-      <div style="display:inline-block; margin:10px; padding:20px; border:1px solid #ccc; border-radius:8px;">
-        <h3>User</h3>
-        <p>Access recipes and restaurants.</p>
-        <a href="{% url 'signup' %}" style="background:#27ae60;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">Sign Up</a>
-        <a href="{% url 'login' %}" style="background:#2980b9;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">Login</a>
-      </div>
-
-      <!-- Admin Section -->
-      <div style="display:inline-block; margin:10px; padding:20px; border:1px solid #ccc; border-radius:8px;">
-        <h3>Admin</h3>
-        <p>Manage site content.</p>
-        <a href="/admin/" style="background:#e67e22;color:white;padding:10px 15px;border-radius:5px;text-decoration:none;">Go to Admin Login</a>
-      </div>
+<!-- Hero Section -->
+<section class="landing-hero">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <div class="hero-content" data-aos="fade-down">
+                    <h1 class="display-4 fw-bold text-white mb-4">
+                        Welcome to <span class="brand-highlight">MealMate</span> 🍽️
+                    </h1>
+                    <p class="lead text-white mb-5">
+                        Your ultimate companion for culinary decisions. Discover, cook, and enjoy amazing food experiences.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
+
+<!-- User Type Selection -->
+<section class="user-selection py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="selection-header text-center mb-5" data-aos="fade-up">
+                    <h2 class="display-5 fw-bold mb-3">Choose Your Experience</h2>
+                    <p class="lead text-muted">Select how you'd like to use MealMate</p>
+                </div>
+
+                <div class="row justify-content-center g-4">
+                    <!-- User Card -->
+                    <div class="col-md-6 col-lg-5" data-aos="fade-right" data-aos-delay="200">
+                        <div class="user-card user-type-card">
+                            <div class="card-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">Food Explorer</h3>
+                                <p class="card-description">
+                                    Discover amazing recipes, find perfect restaurants, and get personalized food recommendations tailored to your taste.
+                                </p>
+                                <div class="card-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Personalized Recommendations</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Save Favorite Recipes</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Restaurant Discovery</span>
+                                    </div>
+                                </div>
+                                <div class="card-actions">
+                                    <a href="{% url 'signup' %}" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-user-plus me-2"></i>Join Now
+                                    </a>
+                                    <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">
+                                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admin Card -->
+                    <div class="col-md-6 col-lg-5" data-aos="fade-left" data-aos-delay="200">
+                        <div class="user-card admin-type-card">
+                            <div class="card-icon">
+                                <i class="fas fa-crown"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3 class="card-title">Content Manager</h3>
+                                <p class="card-description">
+                                    Manage restaurant listings, add new recipes, and curate the culinary experience for all MealMate users.
+                                </p>
+                                <div class="card-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Manage Restaurants</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Add & Edit Recipes</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>Content Moderation</span>
+                                    </div>
+                                </div>
+                                <div class="card-actions">
+                                    <a href="/admin/" class="btn btn-warning btn-lg">
+                                        <i class="fas fa-lock me-2"></i>Admin Portal
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats mt-5" data-aos="fade-up" data-aos-delay="400">
+                    <div class="row justify-content-center text-center">
+                        <div class="col-md-3 col-6">
+                            <div class="stat-item">
+                                <div class="stat-number">100+</div>
+                                <div class="stat-label">Recipes</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="stat-item">
+                                <div class="stat-number">50+</div>
+                                <div class="stat-label">Restaurants</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="stat-item">
+                                <div class="stat-number">1K+</div>
+                                <div class="stat-label">Food Lovers</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="stat-item">
+                                <div class="stat-number">24/7</div>
+                                <div class="stat-label">Available</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .landing-hero {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%),
+                    url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        padding: 120px 0 80px;
+        position: relative;
+    }
+
+    .brand-highlight {
+        background: linear-gradient(135deg, #FFD700, #FF6B6B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .user-selection {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        min-height: 100vh;
+    }
+
+    .user-card {
+        background: white;
+        border-radius: 25px;
+        padding: 40px 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .user-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .user-type-card::before {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+    }
+
+    .admin-type-card::before {
+        background: linear-gradient(135deg, #FFD700, #FF6B6B);
+    }
+
+    .user-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .admin-type-card .card-icon {
+        background: linear-gradient(135deg, #FFD700, #FF6B6B);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .card-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 15px;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .card-description {
+        color: #718096;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .card-features {
+        margin-bottom: 30px;
+    }
+
+    .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+        color: #4a5568;
+        font-weight: 500;
+    }
+
+    .feature-item i {
+        color: #48bb78;
+        font-size: 0.9rem;
+    }
+
+    .card-actions {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        flex: 1;
+        min-width: 140px;
+        text-align: center;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        background: linear-gradient(135deg, #764ba2, #667eea);
+        color: white;
+    }
+
+    .btn-outline-primary {
+        background: transparent;
+        color: #667eea;
+        border: 2px solid #667eea;
+    }
+
+    .btn-outline-primary:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .btn-warning {
+        background: linear-gradient(135deg, #FFD700, #FF6B6B);
+        color: #2d3748;
+        box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        flex: 1;
+    }
+
+    .btn-warning:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+        background: linear-gradient(135deg, #FF6B6B, #FFD700);
+        color: #2d3748;
+    }
+
+    .quick-stats {
+        padding: 40px 0;
+    }
+
+    .stat-item {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #667eea;
+        margin-bottom: 5px;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+        color: #718096;
+        font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .landing-hero {
+            padding: 100px 0 60px;
+            background-attachment: scroll;
+        }
+        
+        .card-actions {
+            flex-direction: column;
+        }
+        
+        .btn {
+            flex: none;
+        }
+    }
+</style>
+
+<!-- AOS Animation -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+</script>
 {% endblock %}

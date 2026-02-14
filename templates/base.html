@@ -1,34 +1,373 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>MealMate</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}MealMate - Your Food Companion{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #FFD700;
+            --cream: #FFF8E1;
+            --deep-red: #C41E3A;
+            --dark-green: #2E8B57;
+            --warm-brown: #8B4513;
+            --soft-white: #FAFAFA;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            padding-top: 60px; /* Reduced for thinner header */
+        }
+
+        /* Floating Food Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.3;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { top: 20%; right: 10%; animation-delay: 2s; }
+        .floating-element:nth-child(3) { top: 60%; left: 8%; animation-delay: 4s; }
+        .floating-element:nth-child(4) { top: 40%; right: 5%; animation-delay: 1s; }
+        .floating-element:nth-child(5) { bottom: 20%; right: 15%; animation-delay: 3s; }
+        .floating-element:nth-child(6) { bottom: 10%; left: 20%; animation-delay: 5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Navigation - Made thinner */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0; /* Reduced from 1rem 0 */
+            position: fixed !important;
+            top: 0 !important;
+            width: 100% !important;
+            z-index: 1030 !important;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+            height: 60px; /* Fixed height */
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem; /* Reduced from 2rem */
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--deep-red), var(--warm-brown));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-text {
+            font-weight: 500;
+            color: #666;
+            font-size: 0.9rem; /* Smaller text */
+        }
+
+        /* Animated Food Row in Header */
+        .header-food-row {
+            position: absolute;
+            top: 50%;
+            right: 150px; /* Moved closer */
+            transform: translateY(-50%);
+            display: flex;
+            gap: 10px; /* Reduced gap */
+            font-size: 1.2rem; /* Smaller emojis */
+        }
+
+        .food-icon {
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .food-icon:nth-child(1) { animation-delay: 0s; }
+        .food-icon:nth-child(2) { animation-delay: 0.2s; }
+        .food-icon:nth-child(3) { animation-delay: 0.4s; }
+        .food-icon:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-5px); } /* Reduced bounce */
+            60% { transform: translateY(-3px); }
+        }
+
+        /* Messages */
+        .alert {
+            border: none;
+            border-radius: 10px; /* Slightly smaller radius */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+            backdrop-filter: blur(20px);
+            border-left: 3px solid; /* Thinner border */
+            margin: 0.75rem auto; /* Reduced margin */
+            max-width: 800px;
+            padding: 0.75rem 1rem; /* Smaller padding */
+        }
+
+        .alert-success {
+            background: rgba(46, 139, 87, 0.9);
+            border-left-color: #1e7a4c;
+            color: white;
+        }
+
+        .alert-danger {
+            background: rgba(196, 30, 58, 0.9);
+            border-left-color: #a1162e;
+            color: white;
+        }
+
+        .alert-info {
+            background: rgba(102, 126, 234, 0.9);
+            border-left-color: #667eea;
+            color: white;
+        }
+
+        .alert-warning {
+            background: rgba(255, 215, 0, 0.9);
+            border-left-color: #e6c200;
+            color: #333;
+        }
+
+        /* Main Content */
+        main {
+            min-height: calc(100vh - 30px); /* Reduced for thinner footer */
+            position: relative;
+            padding-bottom: 30px; /* Reduced for thinner footer */
+            padding-top: 15px; /* Reduced spacing */
+        }
+
+        /* Footer with Quotes - Made even thinner */
+        .footer-with-quote {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(44, 33, 82, 0.95);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3px 0; /* Very thin padding */
+            z-index: 1000;
+            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+            height: 30px; /* Fixed thin height */
+        }
+
+        .quote-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 10px; /* Reduced padding */
+        }
+
+        .quote-text {
+            color: rgba(255, 255, 255, 0.95);
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem; /* Smaller font */
+            font-style: italic;
+            text-align: center;
+            margin: 0;
+            line-height: 1.1; /* Tighter line spacing */
+            transition: opacity 0.5s ease;
+        }
+
+        .quote-author {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.65rem; /* Even smaller */
+            font-style: normal;
+            text-align: center;
+            margin-top: 0; /* No spacing */
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Container improvements */
+        .container {
+            max-width: 1200px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 50px; /* Even smaller on mobile */
+            }
+            
+            .navbar {
+                height: 50px;
+                padding: 0.3rem 0;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+            
+            .header-food-row {
+                display: none;
+            }
+            
+            .quote-text {
+                font-size: 0.7rem;
+            }
+            
+            .footer-with-quote {
+                height: 25px;
+                padding: 2px 0;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>MealMate</h1>
-    <hr>
-  </header>
+    <!-- Floating Food Elements -->
+    <div class="floating-elements">
+        <div class="floating-element">🍕</div>
+        <div class="floating-element">🍣</div>
+        <div class="floating-element">🍔</div>
+        <div class="floating-element">🥗</div>
+        <div class="floating-element">🍜</div>
+        <div class="floating-element">🍰</div>
+    </div>
 
-  {% if messages %}
-    <ul>
-      {% for msg in messages %}
-        <li>{{ msg }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+    <!-- Navigation - Now thinner -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container position-relative">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-utensils me-1"></i>MealMate <!-- Reduced margin -->
+            </a>
+            
+            <!-- Animated Food Row -->
+            <div class="header-food-row d-none d-lg-flex">
+                <div class="food-icon">🍕</div>
+                <div class="food-icon">🍣</div>
+                <div class="food-icon">🍔</div>
+                <div class="food-icon">🥗</div>
+            </div>
+            
+            <div class="navbar-nav ms-auto">
+                <span class="navbar-text">
+                    Welcome to MealMate
+                </span>
+            </div>
+        </div>
+    </nav>
 
-  {% block content %}{% endblock %}
-  {% if messages %}
-    <div class="messages">
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mt-2"> <!-- Reduced margin -->
         {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                <div class="d-flex align-items-center">
+                    <i class="fas 
+                        {% if message.tags == 'success' %}fa-check-circle me-2{% endif %}
+                        {% if message.tags == 'error' or message.tags == 'danger' %}fa-exclamation-circle me-2{% endif %}
+                        {% if message.tags == 'info' %}fa-info-circle me-2{% endif %}
+                        {% if message.tags == 'warning' %}fa-exclamation-triangle me-2{% endif %}"></i>
+                    <div class="flex-grow-1">
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                </div>
             </div>
         {% endfor %}
     </div>
-  {% endif %}
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer with Quotes - Now thinner -->
+    <footer class="footer-with-quote">
+        <div class="quote-container">
+            <p class="quote-text" id="quoteText">"One cannot think well, love well, sleep well, if one has not dined well."</p>
+            <p class="quote-author" id="quoteAuthor">- Virginia Woolf</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Rotating quotes for footer section
+        const quotes = [
+            {
+                text: "One cannot think well, love well, sleep well, if one has not dined well.",
+                author: "Virginia Woolf"
+            },
+            {
+                text: "Food is our common ground, a universal experience.",
+                author: "James Beard"
+            },
+            {
+                text: "The only thing I like better than talking about food is eating.",
+                author: "John Walters"
+            },
+            {
+                text: "Life is a combination of magic and pasta.",
+                author: "Federico Fellini"
+            },
+            {
+                text: "Good food is the foundation of genuine happiness.",
+                author: "Auguste Escoffier"
+            },
+            {
+                text: "Food brings people together on many different levels.",
+                author: "Giada De Laurentiis"
+            }
+        ];
+
+        let currentQuote = 0;
+        const quoteElement = document.getElementById('quoteText');
+        const authorElement = document.getElementById('quoteAuthor');
+
+        function rotateQuote() {
+            // Fade out
+            quoteElement.style.opacity = '0';
+            authorElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                currentQuote = (currentQuote + 1) % quotes.length;
+                quoteElement.textContent = `"${quotes[currentQuote].text}"`;
+                authorElement.textContent = `- ${quotes[currentQuote].author}`;
+                
+                // Fade in
+                quoteElement.style.opacity = '1';
+                authorElement.style.opacity = '1';
+            }, 500);
+        }
+
+        // Change quote every 8 seconds
+        setInterval(rotateQuote, 8000);
+    </script>
 </body>
 </html>
-
-

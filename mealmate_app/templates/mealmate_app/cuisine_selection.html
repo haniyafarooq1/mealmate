@@ -1,24 +1,359 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MealMate - Choose Cuisine</title>
-</head>
-<body>
-    <h1>What type of cuisine are you in the mood for?</h1>
-    <form method="post">
-        {% csrf_token %}
-        
-        <label for="cuisine-select">Choose a cuisine:</label>
-        <select name="cuisine" id="cuisine-select" required>
-            <option value="">-- Please choose a cuisine --</option>
-            {% for cuisine in unique_cuisines %}
-                <option value="{{ cuisine }}">{{ cuisine }}</option>
-            {% endfor %}
-        </select>
-        
-        <button type="submit">Find Restaurants</button>
-    </form>
-    
-    <a href="{% url 'home' %}">← Back to main menu</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Main Content -->
+<section class="cuisine-section" style="background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 50%, #ffd3b6 100%); min-height: 100vh; padding: 80px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <!-- Main Card -->
+                <div class="cuisine-card" data-aos="flip-up" data-aos-duration="800">
+                    <!-- Header -->
+                    <div class="card-header-custom text-center">
+                        <div class="header-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h1 class="display-5 fw-bold text-primary mb-3">Discover Your Flavor Journey 🗺️</h1>
+                        <p class="lead text-muted">Let your taste buds travel the world. Where shall we dine today?</p>
+                    </div>
+
+                    <!-- Food Preview - FIXED IMAGES -->
+                    <div class="food-preview" data-aos="fade-up" data-aos-delay="200">
+                        <div class="row g-3">
+                            <div class="col-4">
+                                <div class="preview-item" style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80');">
+                                    <div class="preview-overlay">
+                                        <span>Healthy</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="preview-item" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80');">
+                                    <div class="preview-overlay">
+                                        <span>Gourmet</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="preview-item" style="background-image: url('https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80');">
+                                    <div class="preview-overlay">
+                                        <span>Comfort</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- EXACT SAME FORM LOGIC -->
+                    <div class="card-body-custom" data-aos="fade-up" data-aos-delay="400">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <div class="form-group-custom">
+                                <label for="cuisine-select" class="form-label-custom">
+                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    Choose Your Cuisine Style
+                                </label>
+                                <div class="select-container">
+                                    <select name="cuisine" id="cuisine-select" class="form-select-custom" required>
+                                        <option value="">-- Select your preferred cuisine --</option>
+                                        {% for cuisine in unique_cuisines %}
+                                            <option value="{{ cuisine }}">{{ cuisine }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                                <div class="form-hint">
+                                    <i class="fas fa-lightbulb me-1"></i>
+                                    Explore different culinary traditions from around the world
+                                </div>
+                            </div>
+
+                            <button type="submit" class="discover-btn">
+                                <i class="fas fa-search me-2"></i>
+                                Find Perfect Restaurants
+                                <div class="btn-glow"></div>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Stats -->
+                    {% if unique_cuisines %}
+                    <div class="stats-section" data-aos="fade-up" data-aos-delay="600">
+                        <div class="stats-container">
+                            <div class="stat-box">
+                                <div class="stat-icon">🍽️</div>
+                                <div class="stat-content">
+                                    <div class="stat-number">{{ unique_cuisines|length }}</div>
+                                    <div class="stat-label">Cuisine Types</div>
+                                </div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-icon">⭐</div>
+                                <div class="stat-content">
+                                    <div class="stat-number">50+</div>
+                                    <div class="stat-label">Restaurants</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Navigation -->
+                    <div class="navigation-custom" data-aos="fade-up" data-aos-delay="800">
+                        <a href="{% url 'decision_flow' %}" class="back-link">
+                            <i class="fas fa-arrow-left me-2"></i>
+                            Back to Food Choices
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .cuisine-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        transition: all 0.4s ease;
+    }
+
+    .cuisine-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-header-custom {
+        padding: 40px 40px 30px;
+        background: linear-gradient(135deg, #a8e6cf, #dcedc1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .header-icon {
+        font-size: 3rem;
+        color: #4a9c82;
+        margin-bottom: 20px;
+        animation: gentleBounce 3s ease-in-out infinite;
+    }
+
+    @keyframes gentleBounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-5px); }
+    }
+
+    .text-primary {
+        color: #4a9c82 !important;
+    }
+
+    .food-preview {
+        padding: 0 30px 30px;
+    }
+
+    .preview-item {
+        height: 100px;
+        border-radius: 15px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .preview-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .preview-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        color: white;
+        padding: 8px;
+        text-align: center;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .card-body-custom {
+        padding: 0 40px 30px;
+    }
+
+    .form-group-custom {
+        margin-bottom: 30px;
+    }
+
+    .form-label-custom {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #2d3748;
+        font-size: 1.1rem;
+    }
+
+    .select-container {
+        position: relative;
+    }
+
+    .form-select-custom {
+        width: 100%;
+        padding: 15px 50px 15px 20px;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        background: white;
+        font-size: 1rem;
+        appearance: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        font-weight: 500;
+        color: #4a5568;
+    }
+
+    .form-select-custom:focus {
+        outline: none;
+        border-color: #a8e6cf;
+        box-shadow: 0 5px 20px rgba(168, 230, 207, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .select-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #4a9c82;
+        pointer-events: none;
+    }
+
+    .form-hint {
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #718096;
+        font-style: italic;
+    }
+
+    .discover-btn {
+        position: relative;
+        width: 100%;
+        padding: 16px 30px;
+        background: linear-gradient(135deg, #a8e6cf, #4a9c82);
+        color: white;
+        border: none;
+        border-radius: 15px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(74, 156, 130, 0.3);
+    }
+
+    .discover-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(74, 156, 130, 0.4);
+        background: linear-gradient(135deg, #4a9c82, #a8e6cf);
+    }
+
+    .btn-glow {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+        transition: 0.6s;
+    }
+
+    .discover-btn:hover .btn-glow {
+        left: 100%;
+    }
+
+    .stats-section {
+        margin: 30px 0;
+        padding: 25px;
+        background: rgba(168, 230, 207, 0.1);
+        border-radius: 20px;
+        border: 1px solid rgba(168, 230, 207, 0.3);
+    }
+
+    .stats-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .stat-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px;
+        background: white;
+        border-radius: 15px;
+        transition: transform 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    .stat-box:hover {
+        transform: translateY(-3px);
+    }
+
+    .stat-icon {
+        font-size: 1.8rem;
+    }
+
+    .stat-number {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #4a9c82;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #718096;
+        font-weight: 600;
+    }
+
+    .navigation-custom {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .back-link {
+        color: #4a9c82;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 10px 20px;
+        border-radius: 10px;
+        background: rgba(168, 230, 207, 0.2);
+    }
+
+    .back-link:hover {
+        color: white;
+        background: #4a9c82;
+        text-decoration: none;
+    }
+</style>
+
+<!-- AOS Animation -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+</script>
+{% endblock %}

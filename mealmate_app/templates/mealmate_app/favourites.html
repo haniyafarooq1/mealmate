@@ -1,67 +1,428 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>My Favorites</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        .favorites-section { margin: 30px 0; }
-        .favorite-item { 
-            border: 1px solid #ddd; 
-            padding: 15px; 
-            margin: 10px 0; 
-            border-radius: 5px;
-        }
-        .restaurant { background-color: #e8f5e8; }
-        .recipe { background-color: #fff3e0; }
-        .btn {
-            display: inline-block;
-            padding: 8px 16px;
-            background: #dc3545;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-    </style>
-</head>
-<body>
-    <h1>❤️ My Favorites</h1>
+{% extends 'base.html' %}
 
-    <div class="favorites-section">
-        <h2>Favorite Restaurants</h2>
-        {% if favorite_restaurants %}
-            {% for fav in favorite_restaurants %}
-                <div class="favorite-item restaurant">
-                    <h3>{{ fav.restaurant.name }}</h3>
-                    <p><strong>Cuisine:</strong> {{ fav.restaurant.cuisine }}</p>
-                    <p><strong>Location:</strong> {{ fav.restaurant.location }}</p>
-                    <p><strong>Price:</strong> ${{ fav.restaurant.average_price }}</p>
-                    <a href="#" class="btn">Remove from Favorites</a>
+{% block content %}
+<!-- Main Content -->
+<section class="favorites-section" style="background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 50%, #ffd3b6 100%); min-height: 100vh; padding: 80px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Header -->
+                <div class="favorites-header text-center mb-5" data-aos="fade-down">
+                    <div class="header-heart">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h1 class="display-4 fw-bold text-primary mb-3">❤️ My Favorites</h1>
+                    <p class="lead text-muted">Your curated collection of amazing restaurants and recipes</p>
+                    
+                    <!-- Favorites Stats -->
+                    <div class="favorites-stats">
+                        <div class="stats-row">
+                            <div class="stat-item">
+                                <div class="stat-number">{{ favorite_restaurants|length }}</div>
+                                <div class="stat-label">Restaurants</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{{ favorite_recipes|length }}</div>
+                                <div class="stat-label">Recipes</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{{ favorite_restaurants|length|add:favorite_recipes|length }}</div>
+                                <div class="stat-label">Total Favorites</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            {% endfor %}
-        {% else %}
-            <p>No favorite restaurants yet.</p>
-        {% endif %}
-    </div>
 
-    <div class="favorites-section">
-        <h2>Favorite Recipes</h2>
-        {% if favorite_recipes %}
-            {% for fav in favorite_recipes %}
-                <div class="favorite-item recipe">
-                    <h3>{{ fav.recipe.title }}</h3>
-                    <p><strong>Meal Type:</strong> {{ fav.recipe.meal_type }}</p>
-                    <p><strong>Time:</strong> {{ fav.recipe.estimated_time }} minutes</p>
-                    <p><strong>Ingredients:</strong> {{ fav.recipe.ingredients }}</p>
-                    <a href="#" class="btn">Remove from Favorites</a>
+                <!-- Favorite Restaurants -->
+                <div class="favorites-category" data-aos="fade-up">
+                    <div class="category-header">
+                        <i class="fas fa-store fa-2x me-3 text-primary"></i>
+                        <h2 class="category-title">Favorite Restaurants</h2>
+                        <span class="category-count">{{ favorite_restaurants|length }}</span>
+                    </div>
+
+                    {% if favorite_restaurants %}
+                    <div class="favorites-grid">
+                        {% for fav in favorite_restaurants %}
+                        <div class="favorite-card restaurant-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                            <div class="card-header">
+                                <h3 class="favorite-name">{{ fav.restaurant.name }}</h3>
+                                <div class="favorite-badge restaurant-badge">
+                                    <i class="fas fa-utensils me-1"></i>{{ fav.restaurant.cuisine }}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="favorite-details">
+                                    <div class="detail-row">
+                                        <i class="fas fa-map-marker-alt text-primary"></i>
+                                        <span>{{ fav.restaurant.location }}</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fas fa-tag text-success"></i>
+                                        <span>${{ fav.restaurant.average_price }} average</span>
+                                    </div>
+                                    {% if fav.restaurant.discount %}
+                                    <div class="detail-row">
+                                        <i class="fas fa-percent text-warning"></i>
+                                        <span>{{ fav.restaurant.discount }}% off special</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <!-- Remove functionality can be added later -->
+                                <button class="remove-btn" disabled>
+                                    <i class="fas fa-times me-2"></i>Remove
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state" data-aos="fade-up">
+                        <div class="empty-icon">
+                            <i class="fas fa-store fa-3x text-muted"></i>
+                        </div>
+                        <h4 class="text-muted">No Favorite Restaurants Yet</h4>
+                        <p class="text-muted">Start exploring restaurants and add them to your favorites!</p>
+                        <a href="{% url 'cuisine_selection' %}" class="explore-btn">
+                            <i class="fas fa-search me-2"></i>Explore Restaurants
+                        </a>
+                    </div>
+                    {% endif %}
                 </div>
-            {% endfor %}
-        {% else %}
-            <p>No favorite recipes yet.</p>
-        {% endif %}
-    </div>
 
-    <br>
-    <a href="/users/home/">← Back to Home</a>
-</body>
-</html>
+                <!-- Favorite Recipes -->
+                <div class="favorites-category" data-aos="fade-up" data-aos-delay="200">
+                    <div class="category-header">
+                        <i class="fas fa-utensils fa-2x me-3 text-success"></i>
+                        <h2 class="category-title">Favorite Recipes</h2>
+                        <span class="category-count">{{ favorite_recipes|length }}</span>
+                    </div>
+
+                    {% if favorite_recipes %}
+                    <div class="favorites-grid">
+                        {% for fav in favorite_recipes %}
+                        <div class="favorite-card recipe-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:300 }}">
+                            <div class="card-header">
+                                <h3 class="favorite-name">{{ fav.recipe.title }}</h3>
+                                <div class="favorite-badge recipe-badge">
+                                    <i class="fas fa-clock me-1"></i>{{ fav.recipe.meal_type }}
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="favorite-details">
+                                    <div class="detail-row">
+                                        <i class="fas fa-hourglass-half text-info"></i>
+                                        <span>{{ fav.recipe.estimated_time }} minutes</span>
+                                    </div>
+                                    <div class="detail-row">
+                                        <i class="fas fa-carrot text-warning"></i>
+                                        <span class="ingredients-preview">{{ fav.recipe.ingredients|truncatewords:10 }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <!-- Remove functionality can be added later -->
+                                <button class="remove-btn" disabled>
+                                    <i class="fas fa-times me-2"></i>Remove
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="empty-state" data-aos="fade-up">
+                        <div class="empty-icon">
+                            <i class="fas fa-utensils fa-3x text-muted"></i>
+                        </div>
+                        <h4 class="text-muted">No Favorite Recipes Yet</h4>
+                        <p class="text-muted">Discover amazing recipes and save them for later!</p>
+                        <a href="{% url 'meal_type_selection' %}" class="explore-btn">
+                            <i class="fas fa-search me-2"></i>Explore Recipes
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Navigation -->
+                <div class="navigation-favorites text-center mt-5" data-aos="fade-up">
+                    <a href="/users/home/" class="back-home-btn">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .favorites-header {
+        padding: 0 20px;
+    }
+
+    .header-heart {
+        font-size: 3rem;
+        color: #ff6b6b;
+        margin-bottom: 20px;
+        animation: heartbeat 2s ease-in-out infinite;
+    }
+
+    @keyframes heartbeat {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
+
+    .text-primary {
+        color: #4a9c82 !important;
+    }
+
+    .favorites-stats {
+        margin-top: 30px;
+    }
+
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .stat-item {
+        text-align: center;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-3px);
+    }
+
+    .stat-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #4a9c82;
+        line-height: 1;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
+        color: #718096;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    .favorites-category {
+        margin-bottom: 50px;
+    }
+
+    .category-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .category-title {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0;
+        flex: 1;
+    }
+
+    .category-count {
+        background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .favorites-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 25px;
+    }
+
+    .favorite-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .favorite-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .restaurant-card {
+        border-left: 5px solid #74b9ff;
+    }
+
+    .recipe-card {
+        border-left: 5px solid #ff9a9e;
+    }
+
+    .card-header {
+        padding: 25px 25px 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .favorite-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0 0 10px 0;
+    }
+
+    .favorite-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .restaurant-badge {
+        background: linear-gradient(135deg, #74b9ff, #0984e3);
+        color: white;
+    }
+
+    .recipe-badge {
+        background: linear-gradient(135deg, #ff9a9e, #ff6b6b);
+        color: white;
+    }
+
+    .card-body {
+        padding: 20px 25px;
+    }
+
+    .favorite-details {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .detail-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 0;
+    }
+
+    .detail-row i {
+        width: 20px;
+        text-align: center;
+    }
+
+    .ingredients-preview {
+        color: #718096;
+        font-size: 0.9rem;
+    }
+
+    .card-footer {
+        padding: 15px 25px 25px;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .remove-btn {
+        background: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.3);
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: not-allowed;
+        opacity: 0.6;
+        transition: all 0.3s ease;
+    }
+
+    .remove-btn:not(:disabled):hover {
+        background: #dc3545;
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 60px 40px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        border: 2px dashed rgba(74, 156, 130, 0.3);
+    }
+
+    .empty-icon {
+        margin-bottom: 20px;
+        opacity: 0.5;
+    }
+
+    .explore-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #4a9c82, #a8e6cf);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(74, 156, 130, 0.3);
+        margin-top: 15px;
+    }
+
+    .explore-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(74, 156, 130, 0.4);
+        color: white;
+        text-decoration: none;
+    }
+
+    .navigation-favorites {
+        padding: 20px 0;
+    }
+
+    .back-home-btn {
+        display: inline-block;
+        padding: 12px 24px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #4a9c82;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border: 2px solid #4a9c82;
+    }
+
+    .back-home-btn:hover {
+        background: #4a9c82;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(74, 156, 130, 0.3);
+        text-decoration: none;
+    }
+</style>
+
+<!-- AOS Animation -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+</script>
+{% endblock %}

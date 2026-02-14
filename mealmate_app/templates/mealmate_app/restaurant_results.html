@@ -1,43 +1,291 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MealMate - Restaurant Results</title>
-</head>
-<body>
-    <h1>Restaurants for {{ cuisine }} cuisine:</h1>
-    
-    {% if restaurants %}
-        <ul>
-        {% for restaurant in restaurants %}
-            <li>
-                <strong>{{ restaurant.name }}</strong><br>
-                Location: {{ restaurant.location }}<br>
-                Average Price: ${{ restaurant.average_price }}<br>
-                {% if restaurant.discount %}
-                    Discount: {{ restaurant.discount }}% off<br>
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Main Content -->
+<section class="results-section" style="background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 50%, #ffd3b6 100%); min-height: 100vh; padding: 80px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Results Header -->
+                <div class="results-header text-center mb-5" data-aos="fade-down">
+                    <h1 class="display-5 fw-bold text-primary mb-3">🍽️ {{ cuisine }} Restaurants</h1>
+                    <p class="lead text-muted">Discover amazing {{ cuisine }} cuisine near you</p>
+                    <div class="results-stats">
+                        <span class="badge bg-primary px-3 py-2 rounded-pill">
+                            <i class="fas fa-utensils me-1"></i>{{ restaurants|length }} restaurants found
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Restaurant Cards -->
+                {% if restaurants %}
+                <div class="restaurant-cards" data-aos="fade-up">
+                    {% for restaurant in restaurants %}
+                    <div class="restaurant-card" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:100 }}">
+                        <div class="card-body">
+                            <!-- Restaurant Header -->
+                            <div class="restaurant-header">
+                                <h3 class="restaurant-name">{{ restaurant.name }}</h3>
+                                <div class="restaurant-badge">
+                                    <span class="cuisine-badge">{{ cuisine }}</span>
+                                </div>
+                            </div>
+
+                            <!-- Restaurant Details -->
+                            <div class="restaurant-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                    <span class="detail-text">{{ restaurant.location }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-tag text-success"></i>
+                                    <span class="detail-text">Rs.{{ restaurant.average_price }} average</span>
+                                </div>
+                                {% if restaurant.discount %}
+                                <div class="detail-item">
+                                    <i class="fas fa-percent text-warning"></i>
+                                    <span class="detail-text discount-text">{{ restaurant.discount }}% off</span>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="action-buttons">
+                                <!-- EXACT SAME FAVORITES LOGIC -->
+                                <form action="{% url 'add_favorite_restaurant' %}" method="post" class="favorite-form">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
+                                    <button type="submit" class="favorite-btn">
+                                        <i class="fas fa-heart me-2"></i>
+                                        Add to Favorites
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <!-- No Results State -->
+                <div class="no-results text-center" data-aos="fade-up">
+                    <div class="no-results-icon mb-4">
+                        <i class="fas fa-search fa-3x text-muted"></i>
+                    </div>
+                    <h3 class="text-muted mb-3">No {{ cuisine }} restaurants found</h3>
+                    <p class="text-muted mb-4">We couldn't find any restaurants for this cuisine type.</p>
+                    <div class="suggestions">
+                        <p class="text-muted small">
+                            Available cuisines: 
+                            {% with all_cuisines=Restaurant.objects.values_list|dictsort:"cuisine" %}
+                                {{ all_cuisines|join:", " }}
+                            {% endwith %}
+                        </p>
+                    </div>
+                </div>
                 {% endif %}
-                
-                <!-- MOVE THE FAVORITES FORM INSIDE THE LOOP -->
-                <form action="{% url 'add_favorite_restaurant' %}" method="post" style="display: inline; margin-top: 10px;">
-                    {% csrf_token %}
-                    <input type="hidden" name="restaurant_id" value="{{ restaurant.id }}">
-                    <button type="submit" style="background: #dc3545; color: white; padding: 5px 10px; border: none; border-radius: 3px; cursor: pointer;">
-                        ❤️ Add to Favorites
-                    </button>
-                </form>
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>No restaurants found for {{ cuisine }} cuisine.</p>
-        <p>Available cuisines in our database: 
-            {% with all_cuisines=Restaurant.objects.values_list|dictsort:"cuisine" %}
-                {{ all_cuisines|join:", " }}
-            {% endwith %}
-        </p>
-    {% endif %}
-    
-    <a href="{% url 'cuisine_selection' %}">← Choose another cuisine</a><br>
-    <a href="/users/home/">← Back to main menu</a>
-</body>
-</html>
+
+                <!-- Navigation -->
+                <div class="navigation-results text-center mt-5" data-aos="fade-up">
+                    <div class="btn-group-custom">
+                        <a href="{% url 'cuisine_selection' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Choose Another Cuisine
+                        </a>
+                        <a href="/users/home/" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .results-header {
+        padding: 0 20px;
+    }
+
+    .text-primary {
+        color: #4a9c82 !important;
+    }
+
+    .restaurant-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .restaurant-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+
+    .restaurant-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-body {
+        padding: 30px;
+    }
+
+    .restaurant-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .restaurant-name {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0;
+    }
+
+    .cuisine-badge {
+        background: linear-gradient(135deg, #a8e6cf, #4a9c82);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .restaurant-details {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 25px;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .detail-text {
+        color: #4a5568;
+        font-weight: 500;
+    }
+
+    .discount-text {
+        color: #e53e3e;
+        font-weight: 600;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .favorite-form {
+        margin: 0;
+    }
+
+    .favorite-btn {
+        background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        display: flex;
+        align-items: center;
+    }
+
+    .favorite-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        background: linear-gradient(135deg, #ff5252, #ff6b6b);
+    }
+
+    .no-results {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 60px 40px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .no-results-icon {
+        opacity: 0.5;
+    }
+
+    .suggestions {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .navigation-results {
+        padding: 20px 0;
+    }
+
+    .btn-group-custom {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 12px 24px;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid;
+    }
+
+    .btn-outline-primary {
+        color: #4a9c82;
+        border-color: #4a9c82;
+        background: transparent;
+    }
+
+    .btn-outline-primary:hover {
+        background: #4a9c82;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #a8e6cf, #4a9c82);
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #4a9c82, #a8e6cf);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(74, 156, 130, 0.3);
+        color: white;
+    }
+
+    .badge {
+        font-size: 0.9rem;
+    }
+</style>
+
+<!-- AOS Animation -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+</script>
+{% endblock %}

@@ -37,7 +37,7 @@ def cuisine_selection(request):
             'cuisine': cuisine
         })
 
-    # ✅ THIS WAS MISSING!!!
+    
     return render(request, 'mealmate_app/cuisine_selection.html', {
         "unique_cuisines": unique_cuisines
     })

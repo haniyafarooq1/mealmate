@@ -1,35 +1,318 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div style="text-align:center; margin-top:50px;">
-    <h1>Welcome to MealMate!</h1>
-    <p>Can’t decide what to eat? Let’s help you choose!</p>
-
-    <div style="margin-top:30px;">
-
-        <!-- Cook Button (meal type flow) -->
-        <a href="{% url 'meal_type_selection' %}">
-            <button style="padding:15px 30px; margin:10px; font-size:16px; background-color:#4CAF50; color:white; border:none; border-radius:8px; cursor:pointer;">
-                🍳 Cook Something
-            </button>
-        </a>
-
-        <!-- Eat Out Button (restaurant flow) -->
-        <a href="{% url 'cuisine_selection' %}">
-            <button style="padding:15px 30px; margin:10px; font-size:16px; background-color:#2196F3; color:white; border:none; border-radius:8px; cursor:pointer;">
-                🍽️ Eat Out
-            </button>
-        </a>
-
-        <!-- Surprise Button -->
-        <a href="{% url 'surprise_me' %}">
-            <button style="padding:15px 30px; margin:10px; font-size:16px; background-color:#FF9800; color:white; border:none; border-radius:8px; cursor:pointer;">
-                🎲 Surprise Me
-            </button>
-        </a>
-        <a href="{% url 'favorites' %}" style="background: #dc3545; color: white; padding: 15px 30px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px;">
-         ❤️ My Favorites
-        </a>
+<!-- Animated Hero Section -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="container">
+        <div class="row align-items-center min-vh-80">
+            <div class="col-lg-6">
+                <h1 class="display-3 fw-bold text-white mb-4 animate-fade-in">
+                    Hungry? Let <span class="text-warning">MealMate</span> Decide!
+                </h1>
+                <p class="lead text-white mb-4 animate-fade-in-delay">
+                    Stop the "what to eat" struggle. Discover restaurants, recipes, and culinary inspiration in one place.
+                </p>
+                <div class="d-flex flex-wrap gap-3 animate-fade-in-delay-2">
+                    <a href="#choices" class="btn btn-light btn-lg px-4 py-3 rounded-pill fw-semibold">
+                        <i class="fas fa-play me-2"></i>Get Started
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill">
+                        How It Works
+                    </a>
+                    <!-- Small Logout Button -->
+                    <a href="{% url 'landing' %}" class="btn btn-outline-danger btn-sm px-3 py-2 rounded-pill">
+                        <i class="fas fa-sign-out-alt me-1"></i>Logout
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="position-relative">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                         alt="Delicious Food" class="img-fluid rounded-3 shadow-lg animate-float">
+                    <div class="position-absolute top-0 start-0 mt-4 ms-4">
+                        <span class="badge bg-success px-3 py-2 rounded-pill">
+                            <i class="fas fa-star me-1"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    
+    <!-- Animated background elements -->
+    <div class="position-absolute top-0 end-0 w-50 h-100 bg-gradient-to-left"></div>
+    <div class="floating-elements">
+        <div class="floating-element element-1">🍕</div>
+        <div class="floating-element element-2">🍣</div>
+        <div class="floating-element element-3">🍔</div>
+        <div class="floating-element element-4">🥗</div>
+    </div>
+</section>
+
+<!-- Main Choices Section -->
+<section id="choices" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">What's Your Food Mood Today? 🎯</h2>
+            <p class="lead text-muted">Choose your culinary adventure</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Cook Card -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card choice-card h-100 border-0 shadow-hover" data-aos="fade-up">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="fas fa-home fa-3x text-success"></i>
+                        </div>
+                        <h4 class="fw-bold">Cook at Home</h4>
+                        <p class="text-muted mb-3">Find perfect recipes based on what you have</p>
+                        <a href="{% url 'meal_type_selection' %}" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-utensils me-2"></i>Find Recipes
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Eat Out Card -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card choice-card h-100 border-0 shadow-hover" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="fas fa-store fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold">Eat Out</h4>
+                        <p class="text-muted mb-3">Discover amazing restaurants near you</p>
+                        <a href="{% url 'cuisine_selection' %}" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-map-marker-alt me-2"></i>Find Restaurants
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Surprise Card -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card choice-card h-100 border-0 shadow-hover" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="fas fa-gift fa-3x text-warning"></i>
+                        </div>
+                        <h4 class="fw-bold">Surprise Me!</h4>
+                        <p class="text-muted mb-3">Let fate decide your next meal</p>
+                        <a href="{% url 'surprise_me' %}" class="btn btn-warning btn-lg w-100">
+                            <i class="fas fa-dice me-2"></i>Get Surprised
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorites Card -->
+            <div class="col-lg-3 col-md-6">
+                <div class="card choice-card h-100 border-0 shadow-hover" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper mb-3">
+                            <i class="fas fa-heart fa-3x text-danger"></i>
+                        </div>
+                        <h4 class="fw-bold">My Favorites</h4>
+                        <p class="text-muted mb-3">Your saved restaurants & recipes</p>
+                        <a href="{% url 'favorites' %}" class="btn btn-danger btn-lg w-100">
+                            <i class="fas fa-bookmark me-2"></i>View Favorites
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">How MealMate Works ✨</h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="fade-right">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <div class="step-number">1</div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Choose Your Path</h4>
+                        <p class="text-muted">Decide between cooking at home or eating out based on your mood.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-right" data-aos-delay="100">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <div class="step-number">2</div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Get Personalized Suggestions</h4>
+                        <p class="text-muted">Based on cuisine preferences, meal types, or available ingredients.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4" data-aos="fade-right" data-aos-delay="200">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <div class="step-number">3</div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <h4>Enjoy Your Meal!</h4>
+                        <p class="text-muted">Save your favorites and discover new culinary experiences.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Food Gallery Section -->
+<section class="py-5 bg-dark text-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Featured Delights 🍴</h2>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-3" data-aos="zoom-in">
+                <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                     alt="Burger" class="img-fluid rounded-3 gallery-image">
+            </div>
+            <div class="col-md-3" data-aos="zoom-in" data-aos-delay="100">
+                <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                     alt="Pizza" class="img-fluid rounded-3 gallery-image">
+            </div>
+            <div class="col-md-3" data-aos="zoom-in" data-aos-delay="200">
+                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                     alt="Sushi" class="img-fluid rounded-3 gallery-image">
+            </div>
+            <div class="col-md-3" data-aos="zoom-in" data-aos-delay="300">
+                <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                     alt="Pasta" class="img-fluid rounded-3 gallery-image">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Update base.html with these styles -->
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 100px 0;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .min-vh-80 { min-height: 80vh; }
+    
+    .animate-fade-in { animation: fadeIn 1s ease-out; }
+    .animate-fade-in-delay { animation: fadeIn 1s ease-out 0.3s both; }
+    .animate-fade-in-delay-2 { animation: fadeIn 1s ease-out 0.6s both; }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+    
+    .floating-element {
+        position: absolute;
+        font-size: 2rem;
+        animation: floatRandom 10s ease-in-out infinite;
+    }
+    
+    .element-1 { top: 20%; left: 10%; animation-delay: 0s; }
+    .element-2 { top: 60%; right: 15%; animation-delay: 2s; }
+    .element-3 { bottom: 20%; left: 20%; animation-delay: 4s; }
+    .element-4 { top: 40%; right: 5%; animation-delay: 6s; }
+    
+    @keyframes floatRandom {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(10px, -15px) rotate(5deg); }
+        50% { transform: translate(-5px, -25px) rotate(-5deg); }
+        75% { transform: translate(15px, -10px) rotate(3deg); }
+    }
+    
+    .choice-card {
+        transition: all 0.3s ease;
+        border-radius: 15px;
+    }
+    
+    .choice-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    .shadow-hover {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .icon-wrapper {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+    
+    .gallery-image {
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .gallery-image:hover {
+        transform: scale(1.05);
+    }
+    
+    .bg-gradient-to-left {
+        background: linear-gradient(90deg, transparent 0%, rgba(102, 126, 234, 0.1) 100%);
+    }
+</style>
+
+<!-- Add AOS library for scroll animations -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true
+    });
+</script>
 {% endblock %}
